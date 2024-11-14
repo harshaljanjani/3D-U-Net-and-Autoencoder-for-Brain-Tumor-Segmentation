@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D UNet and Auto Encoder Prediction</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>3D UNet and Auto Encoder MRI Prediction</h1>
+        <p>Upload an MRI file to get a predictive mask.</p>
+      </header>
+      <main>
+        <div class="model-selection">
+          <label for="modelSelect">Choose a model:</label>
+          <select id="modelSelect">
+            <option value="3dunet">3D UNet</option>
+            <option value="autoencoder">Auto Encoder</option>
+            <option value="unet">UNet</option>
+          </select>
+        </div>
+        <input type="file" id="fileInput" accept=".nii" />
+        <button id="uploadBtn">Upload</button>
+        <div id="result" class="result"></div>
+      </main>
+    </div>
+    <script>
+      document
+        .getElementById("uploadBtn")
+        .addEventListener("click", async () => {
+          const fileInput = document.getElementById("fileInput");
+          const modelSelect = document.getElementById("modelSelect");
+          const selectedModel = modelSelect.value;
+          console.log(selectedModel);
+
+          if (fileInput.files.length === 0) {
+            alert("Please select a file.");
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("file", fileInput.files[0]);
+          formData.append("model", selectedModel);
+
+          try {
+            const response = await fetch(
+              `http://127.0.0.1:5000/predict/${selectedModel}`,
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (response.ok) {
+              const data = await response.json();
+              const img = document.createElement("img");
+              img.src = data["image_url"];
+              document.getElementById("result").innerHTML = "";
+              document.getElementById("result").appendChild(img);
+            } else {
+              const data = await response.json();
+              alert(data.error || "Error processing the file1.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error processing the file2.");
+          }
+        });
+    </script>
+  </body>
+</html>
