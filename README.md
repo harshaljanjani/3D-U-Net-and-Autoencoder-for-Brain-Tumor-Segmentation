@@ -74,6 +74,13 @@ The models are implemented in Python using PyTorch and TensorFlow. Key steps inc
 1. **Data Preprocessing**: Normalization, augmentation, and resizing of MRI scans.
 2. **Model Training**: Multi-channel input with different MRI modalities, trained using stochastic gradient descent.
 3. **Post-Processing**: Techniques like thresholding and morphological operations to refine the segmentation masks.
+4. 
+
+## Web-App Screenshots
+
+![image](https://github.com/user-attachments/assets/fe6bfce3-e2fc-49e1-8882-775f5d34f701)
+![image](https://github.com/user-attachments/assets/5ecce5f6-5473-4072-806f-db0e92e859c0)
+![image](https://github.com/user-attachments/assets/db82f8da-d356-48be-b6a7-010f9330228a)
 
 ## References
 
